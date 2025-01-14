@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punktestand und Bildauswahl</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #424242;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .image-selection {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s, opacity 0.3s; /* Weicher Übergang */
+            transform: translateY(-100%); /* Ausblenden (nach oben verschieben) */
+            opacity: 0; /* Unsichtbar */
+        }
+
+        .image-selection img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            transition: transform 0.3s, border 0.3s;
+        }
+
+        .image-selection img:hover {
+            transform: scale(1.1);
+            border-color: blue;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            padding-top: 20px;
+        }
+
+        .scoreboard {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            margin: auto;
+            height: 80%;
+        }
+
+        .team {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 45%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 2px solid black;
+            border-radius: 10px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .team .image-container {
+            width: 100%;
+            height: calc(80% - 10px);
+            margin-top: 10px;
+        }
+
+        .team .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .team .score-container {
+            height: 20%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .team .score-container .label {
+            font-size: 3vw;
+            font-weight: bold;
+            color: white;
+        }
+
+        .team .score-container .score {
+            font-size: 5vw;
+            font-weight: bold;
+            color: white;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Bildauswahl -->
+    <div class="image-selection" id="imageSelection">
+        <img src="img_1.jpg" alt="Bild 1">
+        <img src="img_2.jpg" alt="Bild 2">
+        <img src="img_3.jpg" alt="Bild 3">
+        <img src="img_4.jpg" alt="Bild 4">
+        <img src="img_5.jpg" alt="Bild 5">
+        <img src="img_6.jpg" alt="Bild 6">
+    </div>
+
+    <!-- Punktestand und Bilder -->
+    <div class="container">
+        <div class="scoreboard">
+            <!-- Heim -->
+            <div class="team" id="home">
+                <div class="image-container">
+                    <img src="img_1.jpg" alt="Heim" id="homeImage">
+                </div>
+                <div class="score-container">
+                    <div class="label">Heim</div>
+                    <div class="score" id="homeScore">0</div>
+                </div>
+            </div>
+
+            <!-- Gast -->
+            <div class="team" id="guest">
+                <div class="image-container">
+                    <img src="img_2.jpg" alt="Gast" id="guestImage">
+                </div>
+                <div class="score-container">
+                    <div class="label">Gast</div>
+                    <div class="score" id="guestScore">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let homeScore = 0;
+        let guestScore = 0;
+
+        const homeScoreElement = document.getElementById('homeScore');
+        const guestScoreElement = document.getElementById('guestScore');
+        const homeImageElement = document.getElementById('homeImage');
+        const guestImageElement = document.getElementById('guestImage');
+        const imageSelection = document.getElementById('imageSelection');
+
+        // Zustand: Welches Team wird bearbeitet?
+        let currentTeam = null;
+
+        // Bildauswahl sichtbar machen, wenn Maus im oberen Bereich
+        document.addEventListener('mousemove', (event) => {
+            if (event.clientY < 50) {
+                imageSelection.style.transform = 'translateY(0)';
+                imageSelection.style.opacity = '1';
+            } else {
+                imageSelection.style.transform = 'translateY(-100%)';
+                imageSelection.style.opacity = '0';
+            }
+        });
+
+        // Klicke auf ein Bild, um es dem Heim- oder Gast-Team zuzuweisen
+        document.querySelectorAll('.image-selection img').forEach(image => {
+            image.addEventListener('click', () => {
+                if (currentTeam === 'home') {
+                    homeImageElement.src = image.src;
+                    currentTeam = null; // Zurücksetzen
+                } else if (currentTeam === 'guest') {
+                    guestImageElement.src = image.src;
+                    currentTeam = null; // Zurücksetzen
+                }
+            });
+        });
+
+        // Klicke auf Heim-Bild, um es auszuwählen
+        homeImageElement.addEventListener('click', () => {
+            currentTeam = 'home';
+        });
+
+        // Klicke auf Gast-Bild, um es auszuwählen
+        guestImageElement.addEventListener('click', () => {
+            currentTeam = 'guest';
+        });
+
+        // Punkte-Management
+        document.addEventListener('keydown', function (event) {
+            if (event.key === '1') {
+                homeScore++;
+                homeScoreElement.textContent = homeScore;
+            } else if (event.key === '4') {
+                homeScore = Math.max(0, homeScore - 1);
+                homeScoreElement.textContent = homeScore;
+            } else if (event.key === '3') {
+                guestScore++;
+                guestScoreElement.textContent = guestScore;
+            } else if (event.key === '6') {
+                guestScore = Math.max(0, guestScore - 1);
+                guestScoreElement.textContent = guestScore;
+            }
+        });
+    </script>
+</body>
+</html>
