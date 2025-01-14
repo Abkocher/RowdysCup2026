@@ -42,7 +42,7 @@
 
         .image-selection img:hover {
             transform: scale(1.1);
-            border-color: blue;
+            border-color: rgb(241, 241, 247);
         }
 
         .container {
@@ -59,15 +59,15 @@
             align-items: center;
             width: 90%;
             margin: auto;
-            height: 80%;
+            height: 100%;
         }
 
-        .team {
+                .team {
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 45%;
-            height: 100%;
+            flex-direction: column; /* Elemente (Image und Score) untereinander anordnen */
+            justify-content: flex-start;
+            width: 49%; /* Breite des Teams */
+            height: 100%; /* Gesamthöhe der Team-Container */
             background-color: rgba(255, 255, 255, 0.8);
             border: 2px solid black;
             border-radius: 10px;
@@ -77,8 +77,7 @@
 
         .team .image-container {
             width: 100%;
-            height: calc(80% - 10px);
-            margin-top: 10px;
+            height: 30%; /* Bildcontainer nimmt 35% der Höhe des Teams ein */
         }
 
         .team .image-container img {
@@ -88,28 +87,30 @@
         }
 
         .team .score-container {
-            height: 20%;
+            height: 65%; /* Score-Container nimmt 65% der Höhe des Teams ein */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: rgba(0, 0, 0, 0.9);
-        }
-
-        .team .score-container .label {
-            font-size: 3vw;
-            font-weight: bold;
-            color: white;
+            background-color: rgba(155, 149, 149, 0.9);
         }
 
         .team .score-container .score {
-            font-size: 5vw;
+            font-size: calc(32vw); /* Schriftgröße passt sich dynamisch an */
             font-weight: bold;
-            color: white;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 10px 20px;
-            border-radius: 10px;
+            color: rgb(255, 255, 255);
+            background-color: rgba(21, 21, 21, 0.45);
+            width: 100%; /* Breite des Scores anpassen */
+            height: 100%; /* Höhe des Scores anpassen */
+            display: flex; /* Flexbox verwenden */
+            align-items: center; /* Vertikal zentrieren */
+            justify-content: center; /* Horizontal zentrieren */
+            box-sizing: border-box; /* Padding und Border in die Größe einbeziehen */
+            border-radius: 10px; /* Optional für abgerundete Ecken */
+            overflow: hidden; /* Sicherstellen, dass Text nicht überläuft */
         }
+
+
     </style>
 </head>
 <body>
@@ -132,7 +133,7 @@
                     <img src="img_1.jpg" alt="Heim" id="homeImage">
                 </div>
                 <div class="score-container">
-                    <div class="label">Heim</div>
+                    <!-- <div class="label">Heim</div> -->
                     <div class="score" id="homeScore">0</div>
                 </div>
             </div>
@@ -143,7 +144,7 @@
                     <img src="img_2.jpg" alt="Gast" id="guestImage">
                 </div>
                 <div class="score-container">
-                    <div class="label">Gast</div>
+                    <!-- <div class="label">Gast</div> -->
                     <div class="score" id="guestScore">0</div>
                 </div>
             </div>
