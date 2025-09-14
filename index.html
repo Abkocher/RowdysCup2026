@@ -25,7 +25,6 @@
       from { background-color: var(--bg-color); }
       to   { background-color: #ff4d4d; }
     }
-
     /* Sidebar */
     #sidebar {
       position: fixed;
@@ -85,7 +84,7 @@
       align-items: center;
       background: transparent;
       border-radius: 12px;
-      padding: 10px;
+      padding: 2px;
       user-select: none;
       height: 65vh;
     }
@@ -97,7 +96,6 @@
       border-radius: 8px;
     }
 
-    /* Score mit Fortschrittsrahmen */
     .score {
       position: relative;
       flex: 1;
@@ -105,14 +103,15 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 18vw; /* sehr groß, füllt den Container */
+      font-size: 18vw;
       font-weight: bold;
       color: #111;
-      margin-top: 5px;
+      margin-top: 2px;
+      margin-bottom: 2px;
       background: var(--container-color);
       border-radius: 12px;
       cursor: pointer;
-      line-height: 1; /* kein Extra-Rand */
+      line-height: 1;
       --progress: 0;
     }
     .score.animate { animation: pop 0.3s ease-out; }
@@ -142,12 +141,11 @@
     /* Timer + Controls */
     .timer-container {
       text-align: center;
-      margin-top: -20px; /* enger ran an die Score-Container */
+      margin-top: -20px;
       margin-bottom: 20px;
     }
-
     .timer {
-      font-size: 6rem; /* Uhr viel größer */
+      font-size: 6rem;
       font-weight: bold;
       color: white;
       background-color: rgba(0,0,0,0.8);
@@ -155,14 +153,12 @@
       border-radius: 12px;
       display: inline-block;
       box-shadow: 0 0 12px rgba(0,0,0,0.5);
-      margin-bottom: 10px; /* nur kleiner Abstand zu den Controls */
+      margin-bottom: 10px;
     }
-
     .controls {
       text-align: center;
-      margin: 0; /* direkt unter der Uhr */
+      margin: 0;
     }
-
     .controls select, .controls button {
       margin: 5px;
       padding: 10px 15px;
@@ -177,7 +173,6 @@
       transition: background 0.3s;
     }
     .controls button:hover { background: #0056b3; }
-
     @media (max-width: 800px) {
       .scoreboard { flex-direction: column; }
       .score { font-size: 25vw; }
@@ -237,7 +232,13 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/drag-drop-touch@latest/dist/drag-drop-touch.min.js"></script>
 <script>
+  // Polyfill nur auf Touch-Geräten aktivieren
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+    dragDropTouch();
+  }
+
   // Sidebar toggle
   document.getElementById('toggle').addEventListener('click', () => {
     document.getElementById('sidebar').classList.toggle('collapsed');
