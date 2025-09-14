@@ -19,13 +19,16 @@
       flex-direction: column;
       min-height: 100vh;
       transition: background-color 0.5s;
+      -webkit-user-select: none;  /* disable text selection on touch devices */
+      -moz-user-select: none;
+      user-select: none;
+      touch-action: manipulation;
     }
     body.blink { animation: blink-bg 1s infinite alternate; }
     @keyframes blink-bg {
       from { background-color: var(--bg-color); }
       to   { background-color: #ff4d4d; }
     }
-    /* Sidebar */
     #sidebar {
       position: fixed;
       left: 0; top: 0; bottom: 0;
@@ -35,6 +38,8 @@
       transition: left 0.3s;
       z-index: 100;
       box-shadow: 4px 0 8px rgba(0,0,0,0.1);
+      -webkit-user-select: none;
+      user-select: none;
     }
     #sidebar.collapsed { left: -200px; }
     #toggle {
@@ -48,6 +53,9 @@
       cursor: pointer;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: manipulation;
     }
     #sidebar img {
       width: 70%;
@@ -55,9 +63,9 @@
       cursor: grab;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      touch-action: none; /* wichtig für Touch-Geräte */
+      user-select: none;
     }
-
-    /* Main */
     #main {
       margin-left: 200px;
       transition: margin-left 0.3s;
@@ -65,9 +73,11 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: manipulation;
     }
     #sidebar.collapsed + #main { margin-left: 0; }
-
     .scoreboard {
       display: flex;
       justify-content: space-between;
@@ -76,7 +86,6 @@
       align-items: center;
       padding: 20px;
     }
-
     .team-container {
       flex: 1;
       display: flex;
@@ -87,6 +96,12 @@
       padding: 2px;
       user-select: none;
       height: 65vh;
+      border: 2px dashed transparent;
+      transition: border-color 0.3s ease;
+      touch-action: none;
+    }
+    .team-container.drop-target {
+      border-color: var(--accent-color);
     }
     .team-container img {
       width: 100%;
@@ -94,8 +109,10 @@
       object-fit: contain;
       background: transparent;
       border-radius: 8px;
+      user-select: none;
+      pointer-events: auto;
+      touch-action: none;
     }
-
     .score {
       position: relative;
       flex: 1;
@@ -113,6 +130,8 @@
       cursor: pointer;
       line-height: 1;
       --progress: 0;
+      user-select: none;
+      touch-action: manipulation;
     }
     .score.animate { animation: pop 0.3s ease-out; }
     @keyframes pop {
@@ -130,19 +149,19 @@
         rgb(255, 0, 0) calc(var(--progress) * 1turn),
         rgb(0, 128, 0) 0
       );
-      -webkit-mask: 
-        linear-gradient(#fff 0 0) content-box, 
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
         linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
       pointer-events: none;
     }
-
-    /* Timer + Controls */
     .timer-container {
       text-align: center;
       margin-top: -20px;
       margin-bottom: 20px;
+      user-select: none;
+      touch-action: manipulation;
     }
     .timer {
       font-size: 6rem;
@@ -154,10 +173,14 @@
       display: inline-block;
       box-shadow: 0 0 12px rgba(0,0,0,0.5);
       margin-bottom: 10px;
+      user-select: none;
+      touch-action: manipulation;
     }
     .controls {
       text-align: center;
       margin: 0;
+      user-select: none;
+      touch-action: manipulation;
     }
     .controls select, .controls button {
       margin: 5px;
@@ -165,6 +188,8 @@
       font-size: 1.2rem;
       border-radius: 8px;
       border: none;
+      user-select: none;
+      touch-action: manipulation;
     }
     .controls button {
       background: var(--accent-color);
@@ -173,6 +198,7 @@
       transition: background 0.3s;
     }
     .controls button:hover { background: #0056b3; }
+
     @media (max-width: 800px) {
       .scoreboard { flex-direction: column; }
       .score { font-size: 25vw; }
@@ -185,32 +211,31 @@
 <button id="toggle">☰</button>
 
 <aside id="sidebar">
-  <!-- 16 Logos -->
-  <img src="img_1.jpg" draggable="true" id="team1">
-  <img src="img_2.jpg" draggable="true" id="team2">
-  <img src="img_3.jpg" draggable="true" id="team3">
-  <img src="img_4.jpg" draggable="true" id="team4">
-  <img src="img_5.jpg" draggable="true" id="team5">
-  <img src="img_6.jpg" draggable="true" id="team6">
-  <img src="img_7.jpg" draggable="true" id="team7">
-  <img src="img_8.jpg" draggable="true" id="team8">
-  <img src="img_9.jpg" draggable="true" id="team9">
-  <img src="img_10.jpg" draggable="true" id="team10">
-  <img src="img_11.jpg" draggable="true" id="team11">
-  <img src="img_12.jpg" draggable="true" id="team12">
-  <img src="img_13.jpg" draggable="true" id="team13">
-  <img src="img_14.jpg" draggable="true" id="team14">
-  <img src="img_15.jpg" draggable="true" id="team15">
-  <img src="img_16.jpg" draggable="true" id="team16">
+  <img src="img_1.jpg" class="draggable" id="team1" alt="Team 1">
+  <img src="img_2.jpg" class="draggable" id="team2" alt="Team 2">
+  <img src="img_3.jpg" class="draggable" id="team3" alt="Team 3">
+  <img src="img_4.jpg" class="draggable" id="team4" alt="Team 4">
+  <img src="img_5.jpg" class="draggable" id="team5" alt="Team 5">
+  <img src="img_6.jpg" class="draggable" id="team6" alt="Team 6">
+  <img src="img_7.jpg" class="draggable" id="team7" alt="Team 7">
+  <img src="img_8.jpg" class="draggable" id="team8" alt="Team 8">
+  <img src="img_9.jpg" class="draggable" id="team9" alt="Team 9">
+  <img src="img_10.jpg" class="draggable" id="team10" alt="Team 10">
+  <img src="img_11.jpg" class="draggable" id="team11" alt="Team 11">
+  <img src="img_12.jpg" class="draggable" id="team12" alt="Team 12">
+  <img src="img_13.jpg" class="draggable" id="team13" alt="Team 13">
+  <img src="img_14.jpg" class="draggable" id="team14" alt="Team 14">
+  <img src="img_15.jpg" class="draggable" id="team15" alt="Team 15">
+  <img src="img_16.jpg" class="draggable" id="team16" alt="Team 16">
 </aside>
 
 <div id="main">
   <div class="scoreboard">
-    <div class="team-container" id="home-container">
+    <div class="team-container dropzone" id="home-container">
       <img id="home-logo" src="" alt="Heim">
       <div class="score" id="home-score">0</div>
     </div>
-    <div class="team-container" id="guest-container">
+    <div class="team-container dropzone" id="guest-container">
       <img id="guest-logo" src="" alt="Gast">
       <div class="score" id="guest-score">0</div>
     </div>
@@ -232,39 +257,74 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/drag-drop-touch@latest/dist/drag-drop-touch.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@interactjs/interactjs/index.min.js"></script>
 <script>
-  // Polyfill nur auf Touch-Geräten aktivieren
-  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-    dragDropTouch();
-  }
-
-  // Sidebar toggle
+  // Sidebar toggle (touch kompatibel)
   document.getElementById('toggle').addEventListener('click', () => {
     document.getElementById('sidebar').classList.toggle('collapsed');
   });
 
-  // Drag & Drop Logos
-  document.querySelectorAll('#sidebar img').forEach(img => {
-    img.addEventListener('dragstart', e => {
-      e.dataTransfer.setData('text/plain', e.target.id);
-    });
-  });
-  function setupDrop(containerId, logoId) {
-    const container = document.getElementById(containerId);
-    const logo = document.getElementById(logoId);
-    container.addEventListener('dragover', e => e.preventDefault());
-    container.addEventListener('drop', e => {
-      e.preventDefault();
-      const id = e.dataTransfer.getData('text/plain');
-      const dragged = document.getElementById(id);
-      if (dragged) logo.src = dragged.src;
-    });
-  }
-  setupDrop('home-container','home-logo');
-  setupDrop('guest-container','guest-logo');
+  interact.maxInteractions(Infinity);
 
-  // Scores
+  interact('.draggable').draggable({
+    inertia: true,
+    autoScroll: true,
+    modifiers: [
+      interact.modifiers.restrictRect({
+        restriction: 'parent',
+        endOnly: true
+      })
+    ],
+    listeners: {
+      move (event) {
+        const target = event.target;
+        const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+        const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+        target.style.transform = `translate(${x}px, ${y}px)`;
+        target.setAttribute('data-x', x);
+        target.setAttribute('data-y', y);
+      },
+      end(event) {
+        const target = event.target;
+        target.style.transform = 'none';
+        target.removeAttribute('data-x');
+        target.removeAttribute('data-y');
+      }
+    }
+  });
+
+  interact('.dropzone').dropzone({
+    accept: '.draggable',
+    overlap: 0.75,
+    ondropactivate(event) {
+      event.target.classList.add('drop-active');
+    },
+    ondragenter(event) {
+      event.target.classList.add('drop-target');
+      event.relatedTarget.classList.add('can-drop');
+    },
+    ondragleave(event) {
+      event.target.classList.remove('drop-target');
+      event.relatedTarget.classList.remove('can-drop');
+    },
+    ondrop(event) {
+      event.target.classList.remove('drop-target');
+      event.relatedTarget.classList.remove('can-drop');
+      const dragged = event.relatedTarget;
+      const dropzone = event.target;
+      if (dropzone.id === 'home-container') {
+        document.getElementById('home-logo').src = dragged.src;
+      } else if (dropzone.id === 'guest-container') {
+        document.getElementById('guest-logo').src = dragged.src;
+      }
+    },
+    ondropdeactivate(event) {
+      event.target.classList.remove('drop-active');
+      event.target.classList.remove('drop-target');
+    }
+  });
+
   const scores = { home: 0, guest: 0 };
   function updateScore(target, y, elem) {
     if (y < elem.clientHeight / 2) {
@@ -275,48 +335,45 @@
     const scoreElem = document.getElementById(target + '-score');
     scoreElem.textContent = scores[target];
     scoreElem.classList.add('animate');
-    setTimeout(()=>scoreElem.classList.remove('animate'),300);
+    setTimeout(() => scoreElem.classList.remove('animate'), 300);
   }
-  document.getElementById("home-score").addEventListener("click", e => {
-    updateScore("home", e.offsetY, e.currentTarget);
+  document.getElementById('home-score').addEventListener('click', e => {
+    updateScore('home', e.offsetY, e.currentTarget);
   });
-  document.getElementById("guest-score").addEventListener("click", e => {
-    updateScore("guest", e.offsetY, e.currentTarget);
+  document.getElementById('guest-score').addEventListener('click', e => {
+    updateScore('guest', e.offsetY, e.currentTarget);
   });
 
-  // Tastatursteuerung für Punkte
-  document.addEventListener('keydown', function(e) {
+  document.addEventListener('keydown', e => {
     switch (e.key) {
-      case '1': // Heim +1
+      case '1':
         updateScore('home', 0, document.getElementById('home-score'));
         break;
-      case '4': // Heim -1
+      case '4':
         updateScore('home', 1000, document.getElementById('home-score'));
         break;
-      case '2': // Gast +1
+      case '2':
         updateScore('guest', 0, document.getElementById('guest-score'));
         break;
-      case '5': // Gast -1
+      case '5':
         updateScore('guest', 1000, document.getElementById('guest-score'));
         break;
     }
   });
 
-  // Timer
-  let timerElement = document.getElementById("timer");
-  let duration = parseInt(document.getElementById("timeSelect").value);
+  const timerElement = document.getElementById('timer');
+  let duration = parseInt(document.getElementById('timeSelect').value);
   let remaining = duration;
   let timerInterval = null;
 
   function updateTimer() {
     let minutes = Math.floor(remaining / 60);
     let seconds = remaining % 60;
-    timerElement.textContent =
-      `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-    
+    timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
     let progress = (duration - remaining) / duration;
-    document.querySelectorAll(".score").forEach(el=>{
-      el.style.setProperty("--progress", progress);
+    document.querySelectorAll('.score').forEach(el => {
+      el.style.setProperty('--progress', progress);
     });
   }
 
@@ -329,28 +386,32 @@
       } else {
         clearInterval(timerInterval);
         timerInterval = null;
-        timerElement.textContent = "Spielende";
+        timerElement.textContent = 'Spielende';
         document.body.classList.add('blink');
       }
-    },1000);
+    }, 1000);
   }
+
   function pauseTimer() {
     clearInterval(timerInterval);
     timerInterval = null;
   }
+
   function resetTimer() {
     clearInterval(timerInterval);
     timerInterval = null;
-    duration = parseInt(document.getElementById("timeSelect").value);
+    duration = parseInt(document.getElementById('timeSelect').value);
     remaining = duration;
     updateTimer();
     document.body.classList.remove('blink');
   }
 
-  document.getElementById("start").addEventListener("click", startTimer);
-  document.getElementById("pause").addEventListener("click", pauseTimer);
-  document.getElementById("reset").addEventListener("click", resetTimer);
-  document.getElementById("timeSelect").addEventListener("change", resetTimer);
+  document.getElementById('start').addEventListener('click', startTimer);
+  document.getElementById('pause').addEventListener('click', pauseTimer);
+  document.getElementById('reset').addEventListener('click', resetTimer);
+  document.getElementById('timeSelect').addEventListener('change', () => {
+    resetTimer();
+  });
 
   updateTimer();
 </script>
