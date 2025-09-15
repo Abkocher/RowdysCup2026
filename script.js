@@ -50,6 +50,8 @@ document.getElementById('toggle').addEventListener('click', () => {
       case '4': updateScore('home', 1000, document.getElementById('home-score')); break;
       case '2': updateScore('guest', 0, document.getElementById('guest-score')); break;
       case '5': updateScore('guest', 1000, document.getElementById('guest-score')); break;
+    //   case 'a': updateScore('guest', 0, document.getElementById('guest-score')); break;
+    //   case 'd': updateScore('guest', 1000, document.getElementById('guest-score')); break;
     }
   });
   
