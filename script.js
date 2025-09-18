@@ -23,6 +23,47 @@ document.getElementById('toggle').addEventListener('click', () => {
   setupDrop('home-container','home-logo');
   setupDrop('guest-container','guest-logo');
   
+  // --- Klick-Auswahl für Logos ---
+  let selectedTeam = null;
+
+  // Buttons für "Logo wählen"
+  document.querySelectorAll('.logo-select').forEach(btn => {
+    btn.addEventListener('click', () => {
+      // alle Buttons deaktivieren
+      document.querySelectorAll('.logo-select').forEach(b => b.classList.remove('active'));
+
+      // merken, für welches Team gerade gewählt wird
+      selectedTeam = btn.dataset.team;
+      btn.classList.add('active');
+    });
+  });
+
+  // Klick auf Sidebar-Logo
+  document.querySelectorAll('#sidebar img').forEach(img => {
+    img.addEventListener('click', () => {
+      if (selectedTeam) {
+        // gezieltes Logo setzen
+        const logoElem = document.getElementById(selectedTeam + '-logo');
+        if (logoElem) {
+          logoElem.src = img.src;
+        }
+
+        // Auswahl zurücksetzen
+        document.querySelectorAll('.logo-select').forEach(b => b.classList.remove('active'));
+        selectedTeam = null;
+      }
+    });
+  })
+
+  // Dropdown → Logo setzen
+  document.getElementById("home-select").addEventListener("change", function() {
+    document.getElementById("home-logo").src = this.value;
+  });
+  document.getElementById("guest-select").addEventListener("change", function() {
+    document.getElementById("guest-logo").src = this.value;
+  });
+
+
   // Scores
   const scores = { home: 0, guest: 0 };
   function updateScore(target, y, elem) {
