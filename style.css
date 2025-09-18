@@ -89,6 +89,25 @@
     background: transparent;
     border-radius: 8px;
   }
+
+  .logo-select {
+    margin-top: 10px;
+    padding: 8px 14px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: var(--accent-color);
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .logo-select:hover {
+    background: #0056b3;
+  }
+  .logo-select.active {
+    background: #28a745; /* Grün wenn aktiv */
+  }
+  
   
   .score {
     position: relative;
