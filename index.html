@@ -1,106 +1,14 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8" />
-  <title>Rowdys Cup 2026 – Scoreboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <button id="toggle-left">☰ Links</button>
-  <button id="toggle-bottom">☰ Unten</button>
+function resetTimer(){
+  clearInterval(timerInterval);
+  timerInterval = null;
+  duration = parseInt(document.getElementById("timeSelect").value);
+  remaining = duration;
+  updateTimer();
+  document.body.classList.remove('blink');
 
-  <!-- Linke Sidebar mit Bildern -->
-  <aside id="sidebar">
-    <img src="img/img_1.jpg" draggable="true" id="team1" alt="Aileen Krüger">
-    <img src="img/img_2.jpg" draggable="true" id="team2" alt="K+S">
-    <img src="img/img_3.jpg" draggable="true" id="team3" alt="Henne">
-    <img src="img/img_4.jpg" draggable="true" id="team4" alt="Rowdys">
-    <img src="img/img_5.jpg" draggable="true" id="team5" alt="Team 5">
-    <img src="img/img_6.jpg" draggable="true" id="team6" alt="Team 6">
-    <img src="img/img_7.jpg" draggable="true" id="team7" alt="Team 7">
-    <img src="img/img_8.jpg" draggable="true" id="team8" alt="Team 8">
-    <img src="img/img_9.jpg" draggable="true" id="team9" alt="Team 9">
-    <img src="img/img_10.jpg" draggable="true" id="team10" alt="Team 10">
-    <img src="img/img_11.jpg" draggable="true" id="team11" alt="Team 11">
-    <img src="img/img_12.jpg" draggable="true" id="team12" alt="Team 12">
-    <img src="img/img_13.jpg" draggable="true" id="team13" alt="Team 13">
-    <img src="img/img_14.jpg" draggable="true" id="team14" alt="Team 14">
-    <img src="img/img_15.jpg" draggable="true" id="team15" alt="Team 15">
-    <img src="img/img_16.jpg" draggable="true" id="team16" alt="Team 16">
-  </aside>
-
-  <!-- Untere Sidebar mit Buttons -->
-  <aside id="sidebar-bottom" class="collapsed">
-    <div class="controls">
-      <select class="logo-select" id="home-select">
-        <option value="">Team wählen</option>
-        <option value="img/img_1.jpg">Aileen Krüger</option>
-        <option value="img/img_2.jpg">K+S</option>
-        <option value="img/img_3.jpg">Henne</option>
-        <option value="img/img_4.jpg">Rowdys</option>
-        <option value="img/img_5.jpg">Team 5</option>
-        <option value="img/img_6.jpg">Team 6</option>
-        <option value="img/img_7.jpg">Team 7</option>
-        <option value="img/img_8.jpg">Team 8</option>
-        <option value="img/img_9.jpg">Team 9</option>
-        <option value="img/img_10.jpg">Team 10</option>
-        <option value="img/img_11.jpg">Team 11</option>
-        <option value="img/img_12.jpg">Team 12</option>
-        <option value="img/img_13.jpg">Team 13</option>
-        <option value="img/img_14.jpg">Team 14</option>
-        <option value="img/img_15.jpg">Team 15</option>
-        <option value="img/img_16.jpg">Team 16</option>
-      </select>
-      <select id="timeSelect">
-        <option value="10">10 Sekunden</option>
-        <option value="480" selected>8 Minuten</option>
-        <option value="600">10 Minuten</option>
-        <option value="720">12 Minuten</option>
-      </select>
-      <button id="start">Start</button>
-      <button id="pause">Pause</button>
-      <button id="reset">Reset</button>
-      <select class="logo-select" id="guest-select">
-        <option value="">Team wählen</option>
-        <option value="img/img_1.jpg">Aileen Krüger</option>
-        <option value="img/img_2.jpg">K+S</option>
-        <option value="img/img_3.jpg">Henne</option>
-        <option value="img/img_4.jpg">Rowdys</option>
-        <option value="img/img_5.jpg">Team 5</option>
-        <option value="img/img_6.jpg">Team 6</option>
-        <option value="img/img_7.jpg">Team 7</option>
-        <option value="img/img_8.jpg">Team 8</option>
-        <option value="img/img_9.jpg">Team 9</option>
-        <option value="img/img_10.jpg">Team 10</option>
-        <option value="img/img_11.jpg">Team 11</option>
-        <option value="img/img_12.jpg">Team 12</option>
-        <option value="img/img_13.jpg">Team 13</option>
-        <option value="img/img_14.jpg">Team 14</option>
-        <option value="img/img_15.jpg">Team 15</option>
-        <option value="img/img_16.jpg">Team 16</option>
-      </select>
-    </div>
-  </aside>
-
-  <div id="main">
-    <div class="scoreboard">
-      <div class="team-container" id="home-container">
-        <img id="home-logo" src="" alt="Heim Team Logo" />
-        <div class="score" id="home-score">0</div>
-      </div>
-      <div class="team-container" id="guest-container">
-        <img id="guest-logo" src="" alt="Gast Team Logo" />
-        <div class="score" id="guest-score">0</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="timer-container">
-    <div class="timer" id="timer">08:00</div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/drag-drop-touch@1.3.1/drag-drop-touch.min.js"></script>
-  <script src="script.js"></script>
-</body>
-</html>
+  // Punkte zurücksetzen
+  scores.home = 0;
+  scores.guest = 0;
+  document.getElementById("home-score").textContent = scores.home;
+  document.getElementById("guest-score").textContent = scores.guest;
+}
