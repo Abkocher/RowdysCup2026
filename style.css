@@ -2,69 +2,97 @@
   --bg-color: #6c6666;
   --container-color: #c9c7c7;
   --accent-color: #007bff;
+  --sidebar-width: 220px;
+  --sidebar-bottom-height: 140px;
+  --button-bg: white;
+  --button-hover-bg: #e0e0e0;
+  --button-active-bg: #007bff;
+  --button-active-color: white;
 }
-
 body {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', Tahoma, sans-serif;
   background: var(--bg-color);
-  display: flex;
-  flex-direction: column;
   min-height: 100vh;
   transition: background-color 0.5s;
+  display: flex;
+  flex-direction: column;
 }
-
-body.blink { animation: blink-bg 1s infinite alternate; }
-
+body.blink {
+  animation: blink-bg 1s infinite alternate;
+}
 @keyframes blink-bg {
-  from { background-color: var(--bg-color); }
-  to   { background-color: #ff4d4d; }
+  from { background-color: var(--bg-color);}
+  to { background-color: #ff4d4d;}
 }
-
-/* Sidebar: alle 16 Logos gleichzeitig sichtbar */
-/* Sidebar */
+/* Sidebar links */
 #sidebar {
   position: fixed;
   top: 0;
-  left: -220px;             /* komplett draußen, nicht sichtbar */
-  width: 220px;
-  height: 100vh;            /* volle Höhe */
+  left: -220px;
+  width: var(--sidebar-width);
+  height: 100vh;
   background: var(--container-color);
-  overflow-y: auto;         /* Scrollbar falls zu viele Logos */
+  overflow-y: auto;
   transition: left 0.3s ease;
-  z-index: 100;
+  z-index: 110;
   box-shadow: 4px 0 8px rgba(0,0,0,0.1);
   padding: 10px 0;
 }
-
-/* Offen: ganz sichtbar */
-#sidebar.open {
-  left: 0;
-}
-
-/* Toggle Button */
-#toggle {
+#sidebar.open { left: 0; }
+#sidebar.collapsed { left: -220px; }
+/* Sidebar unten */
+#sidebar-bottom {
   position: fixed;
-  top: 10px; left: 10px;
-  z-index: 200;
-  background: var(--accent-color);
-  color: white;
-  border: none;
-  padding: 10px 14px;
-  cursor: pointer;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  left: 0;
+  bottom: -140px;
+  width: 100vw;
+  height: var(--sidebar-bottom-height);
+  background: var(--container-color);
+  overflow-x: auto;
+  overflow-y: hidden;
+  transition: bottom 0.3s ease;
+  z-index: 120;
+  box-shadow: 0 -4px 8px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 10px;
+  gap: 10px;
 }
-
-/* Logos in der Sidebar */
+#sidebar-bottom.open { bottom: 0; }
+#sidebar-bottom.collapsed { bottom: -140px;}
+/* Button-Design für untere Sidebar */
+#sidebar-bottom button {
+  flex: 0 0 auto;
+  min-width: 120px;
+  height: 80px;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  transition: background-color 0.3s, color 0.3s;
+  user-select: none;
+}
+#sidebar-bottom button:hover { transform: scale(1.05); }
+#sidebar-bottom button.active {
+  background-color: var(--accent-color);
+  color: rgb(2, 179, 26);
+  box-shadow: 0 0 8px var(--accent-color);
+}
 #sidebar img {
   display: block;
-  width: 80%;               /* gleich große Breite */
+  width: 80%;
   max-width: 150px;
-  max-height: 80px;         /* gleich hohe Thumbnails */
-  object-fit: contain;      /* nicht verzerren */
-  margin: 10px auto;        /* zentrieren */
+  max-height: 80px;
+  object-fit: contain;
+  margin: 10px auto;
   cursor: grab;
   border-radius: 6px;
   background: white;
@@ -72,22 +100,44 @@ body.blink { animation: blink-bg 1s infinite alternate; }
   padding: 4px;
   transition: transform 0.2s;
 }
-
-#sidebar img:hover {
-  transform: scale(1.05);
+#sidebar img:hover { transform: scale(1.05); }
+/* Toggle Buttons */
+#toggle-left {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 200;
+  background: var(--accent-color);
+  color: rgb(235, 212, 13);
+  border: none;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
-
+#toggle-bottom {
+  position: fixed;
+  left: 10px;
+  bottom: 170px;
+  z-index: 200;
+  background: var(--accent-color);
+  color: rgb(205, 238, 114);
+  border: none;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
 /* Main */
 #main {
-  margin-left: 200px;
+  margin-left: 0px;
+  margin-bottom: 0px;
   transition: margin-left 0.3s ease;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-#sidebar.collapsed + #main { margin-left: 0; }
-
 .scoreboard {
   display: flex;
   justify-content: space-between;
@@ -105,7 +155,7 @@ body.blink { animation: blink-bg 1s infinite alternate; }
   border-radius: 12px;
   padding: 2px;
   user-select: none;
-  height: 65vh;
+  height: 60vh;
 }
 .team-container img {
   width: 100%;
@@ -114,7 +164,6 @@ body.blink { animation: blink-bg 1s infinite alternate; }
   background: transparent;
   border-radius: 8px;
 }
-
 .logo-select {
   margin-top: 10px;
   padding: 8px 14px;
@@ -128,7 +177,6 @@ body.blink { animation: blink-bg 1s infinite alternate; }
 }
 .logo-select:hover { background: #0056b3; }
 .logo-select.active { background: #28a745; }
-
 .score {
   position: relative;
   flex: 1;
@@ -147,11 +195,11 @@ body.blink { animation: blink-bg 1s infinite alternate; }
   line-height: 1;
   --progress: 0;
 }
-.score.animate { animation: pop 0.3s ease-out; }
+.score.animate { animation: pop 0.3s ease-out;}
 @keyframes pop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+  0% { transform: scale(1);}
+  50% { transform: scale(1.2);}
+  100% { transform: scale(1);}
 }
 .score::before {
   content: "";
@@ -160,16 +208,14 @@ body.blink { animation: blink-bg 1s infinite alternate; }
   border-radius: 16px;
   padding: 8px;
   background: conic-gradient(
-    rgb(255, 0, 0) calc(var(--progress) * 1turn),
-    rgb(0, 128, 0) 0
+    rgb(255,0,0) calc(var(--progress) * 1turn),
+    rgb(0,128,0) 0
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
 }
-
-/* Timer + Controls */
 .timer-container {
   text-align: center;
   margin-top: -20px;
@@ -199,14 +245,14 @@ body.blink { animation: blink-bg 1s infinite alternate; }
 }
 .controls button {
   background: var(--accent-color);
-  color: white;
+  color: rgb(255, 255, 255);
   cursor: pointer;
   transition: background 0.3s;
 }
-.controls button:hover { background: #0056b3; }
-
-@media (max-width: 800px) {
-  .scoreboard { flex-direction: column; }
-  .score { font-size: 25vw; }
-  .timer { font-size: 12vw; }
+.controls button:hover { background: #24b300;}
+@media (max-width:800px){
+  .scoreboard{flex-direction:column;}
+  .score{font-size:25vw;}
+  .timer{font-size:12vw;}
+  #main{margin-left:0;}
 }
