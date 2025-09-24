@@ -167,4 +167,3 @@ document.getElementById("reset").addEventListener("click", resetTimer);
 document.getElementById("timeSelect").addEventListener("change", resetTimer);
 
 updateTimer();
-dfdv
