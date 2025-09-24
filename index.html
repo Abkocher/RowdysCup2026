@@ -1,197 +1,106 @@
-// Sidebar Toggle
-let sidebar = document.getElementById('sidebar');
-let sidebarBottom = document.getElementById('sidebar-bottom');
-let persistentOpenLeft = false;
-let persistentOpenBottom = false;
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rowdys Cup 2026 – Scoreboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button id="toggle-left">☰ Links</button>
+  <button id="toggle-bottom">☰ Unten</button>
 
-document.getElementById('toggle-left').addEventListener('click', () => {
-  persistentOpenLeft = !persistentOpenLeft;
-  sidebar.classList.toggle('open', persistentOpenLeft);
-  sidebar.classList.toggle('collapsed', !persistentOpenLeft);
-});
-document.getElementById('toggle-bottom').addEventListener('click', () => {
-  persistentOpenBottom = !persistentOpenBottom;
-  sidebarBottom.classList.toggle('open', persistentOpenBottom);
-  sidebarBottom.classList.toggle('collapsed', !persistentOpenBottom);
-});
+  <!-- Linke Sidebar mit Bildern -->
+  <aside id="sidebar">
+    <img src="img/img_1.jpg" draggable="true" id="team1" alt="Aileen Krüger">
+    <img src="img/img_2.jpg" draggable="true" id="team2" alt="K+S">
+    <img src="img/img_3.jpg" draggable="true" id="team3" alt="Henne">
+    <img src="img/img_4.jpg" draggable="true" id="team4" alt="Rowdys">
+    <img src="img/img_5.jpg" draggable="true" id="team5" alt="Team 5">
+    <img src="img/img_6.jpg" draggable="true" id="team6" alt="Team 6">
+    <img src="img/img_7.jpg" draggable="true" id="team7" alt="Team 7">
+    <img src="img/img_8.jpg" draggable="true" id="team8" alt="Team 8">
+    <img src="img/img_9.jpg" draggable="true" id="team9" alt="Team 9">
+    <img src="img/img_10.jpg" draggable="true" id="team10" alt="Team 10">
+    <img src="img/img_11.jpg" draggable="true" id="team11" alt="Team 11">
+    <img src="img/img_12.jpg" draggable="true" id="team12" alt="Team 12">
+    <img src="img/img_13.jpg" draggable="true" id="team13" alt="Team 13">
+    <img src="img/img_14.jpg" draggable="true" id="team14" alt="Team 14">
+    <img src="img/img_15.jpg" draggable="true" id="team15" alt="Team 15">
+    <img src="img/img_16.jpg" draggable="true" id="team16" alt="Team 16">
+  </aside>
 
-// Mouseover Automatik
-document.addEventListener('mousemove', function(e){
-  if(!persistentOpenLeft){
-    if(e.clientX <= 20){
-      sidebar.classList.add('open');
-      sidebar.classList.remove('collapsed');
-    } else if(e.clientX > 220){
-      sidebar.classList.remove('open');
-      sidebar.classList.add('collapsed');
-    }
-  }
-  if(!persistentOpenBottom){
-    if(e.clientY >= window.innerHeight - 20){
-      sidebarBottom.classList.add('open');
-      sidebarBottom.classList.remove('collapsed');
-    } else if(e.clientY < window.innerHeight - 140){
-      sidebarBottom.classList.remove('open');
-      sidebarBottom.classList.add('collapsed');
-    }
-  }
-});
+  <!-- Untere Sidebar mit Buttons -->
+  <aside id="sidebar-bottom" class="collapsed">
+    <div class="controls">
+      <select class="logo-select" id="home-select">
+        <option value="">Team wählen</option>
+        <option value="img/img_1.jpg">Aileen Krüger</option>
+        <option value="img/img_2.jpg">K+S</option>
+        <option value="img/img_3.jpg">Henne</option>
+        <option value="img/img_4.jpg">Rowdys</option>
+        <option value="img/img_5.jpg">Team 5</option>
+        <option value="img/img_6.jpg">Team 6</option>
+        <option value="img/img_7.jpg">Team 7</option>
+        <option value="img/img_8.jpg">Team 8</option>
+        <option value="img/img_9.jpg">Team 9</option>
+        <option value="img/img_10.jpg">Team 10</option>
+        <option value="img/img_11.jpg">Team 11</option>
+        <option value="img/img_12.jpg">Team 12</option>
+        <option value="img/img_13.jpg">Team 13</option>
+        <option value="img/img_14.jpg">Team 14</option>
+        <option value="img/img_15.jpg">Team 15</option>
+        <option value="img/img_16.jpg">Team 16</option>
+      </select>
+      <select id="timeSelect">
+        <option value="10">10 Sekunden</option>
+        <option value="480" selected>8 Minuten</option>
+        <option value="600">10 Minuten</option>
+        <option value="720">12 Minuten</option>
+      </select>
+      <button id="start">Start</button>
+      <button id="pause">Pause</button>
+      <button id="reset">Reset</button>
+      <select class="logo-select" id="guest-select">
+        <option value="">Team wählen</option>
+        <option value="img/img_1.jpg">Aileen Krüger</option>
+        <option value="img/img_2.jpg">K+S</option>
+        <option value="img/img_3.jpg">Henne</option>
+        <option value="img/img_4.jpg">Rowdys</option>
+        <option value="img/img_5.jpg">Team 5</option>
+        <option value="img/img_6.jpg">Team 6</option>
+        <option value="img/img_7.jpg">Team 7</option>
+        <option value="img/img_8.jpg">Team 8</option>
+        <option value="img/img_9.jpg">Team 9</option>
+        <option value="img/img_10.jpg">Team 10</option>
+        <option value="img/img_11.jpg">Team 11</option>
+        <option value="img/img_12.jpg">Team 12</option>
+        <option value="img/img_13.jpg">Team 13</option>
+        <option value="img/img_14.jpg">Team 14</option>
+        <option value="img/img_15.jpg">Team 15</option>
+        <option value="img/img_16.jpg">Team 16</option>
+      </select>
+    </div>
+  </aside>
 
-// Drag & Drop
-document.querySelectorAll('#sidebar img').forEach(img => {
-  img.addEventListener('dragstart', e => {
-    e.dataTransfer.setData('text/plain', e.target.src);
-  });
-});
-function setupDrop(containerId, logoId){
-  const container = document.getElementById(containerId);
-  const logo = document.getElementById(logoId);
-  container.addEventListener('dragover', e => e.preventDefault());
-  container.addEventListener('drop', e => {
-    e.preventDefault();
-    const src = e.dataTransfer.getData('text/plain');
-    if(src) logo.src = src;
-  });
-}
-setupDrop('home-container','home-logo');
-setupDrop('guest-container','guest-logo');
+  <div id="main">
+    <div class="scoreboard">
+      <div class="team-container" id="home-container">
+        <img id="home-logo" src="" alt="Heim Team Logo" />
+        <div class="score" id="home-score">0</div>
+      </div>
+      <div class="team-container" id="guest-container">
+        <img id="guest-logo" src="" alt="Gast Team Logo" />
+        <div class="score" id="guest-score">0</div>
+      </div>
+    </div>
+  </div>
 
-// Klick-Auswahl Sidebar → Dropdown
-document.querySelectorAll('#sidebar img').forEach(img => {
-  img.addEventListener('click', () => {
-    if(document.querySelector(".logo-select.active")){
-      let select = document.querySelector(".logo-select.active");
-      if(select.id === "home-select") document.getElementById("home-logo").src = img.src;
-      if(select.id === "guest-select") document.getElementById("guest-logo").src = img.src;
-      document.querySelectorAll('.logo-select').forEach(b => b.classList.remove('active'));
-    }
-  });
-});
+  <div class="timer-container">
+    <div class="timer" id="timer">08:00</div>
+  </div>
 
-// Dropdown Buttons aktivieren
-document.querySelectorAll('.logo-select').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.logo-select').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('#sidebar-bottom button').forEach(b => b.classList.remove('active'));
-  });
-});
-
-// Dropdown → Logo setzen
-document.getElementById("home-select").addEventListener("change", function(){
-  document.getElementById("home-logo").src = this.value;
-  document.querySelectorAll('#sidebar-bottom button').forEach(b => b.classList.remove('active'));
-});
-document.getElementById("guest-select").addEventListener("change", function(){
-  document.getElementById("guest-logo").src = this.value;
-  document.querySelectorAll('#sidebar-bottom button').forEach(b => b.classList.remove('active'));
-});
-
-// Scores
-const scores = { home: 0, guest: 0 };
-function updateScore(target, y, elem){
-  if(y < elem.clientHeight / 2) scores[target]++;
-  else scores[target] = Math.max(0, scores[target]-1);
-  const scoreElem = document.getElementById(target + '-score');
-  scoreElem.textContent = scores[target];
-  scoreElem.classList.add('animate');
-  setTimeout(() => scoreElem.classList.remove('animate'), 300);
-}
-document.getElementById("home-score").addEventListener("click", e => {
-  updateScore("home", e.offsetY, e.currentTarget);
-});
-document.getElementById("guest-score").addEventListener("click", e => {
-  updateScore("guest", e.offsetY, e.currentTarget);
-});
-
-// Tastatursteuerung
-document.addEventListener('keydown', function(e){
-  switch(e.key){
-    case '1': updateScore('home',0,document.getElementById('home-score')); break;
-    case '4': updateScore('home',1000,document.getElementById('home-score')); break;
-    case '2': updateScore('guest',0,document.getElementById('guest-score')); break;
-    case '5': updateScore('guest',1000,document.getElementById('guest-score')); break;
-  }
-});
-// Fire TV Remote Steuerung
-  document.addEventListener("keydown", function(e) {
-    // Debug: welchen Keycode empfängt der Stick?
-    console.log("Key pressed:", e.code, e.key);
-
-    switch (e.code) {
-      case "AudioVolumeUp":   // Lauter → Heim +1
-        updateScore("home", 0, document.getElementById("home-score"));
-        break;
-      case "AudioVolumeDown": // Leiser → Heim -1
-        updateScore("home", 1000, document.getElementById("home-score"));
-        break;
-      case "ChannelUp":       // Kanal hoch → Gast +1
-        updateScore("guest", 0, document.getElementById("guest-score"));
-        break;
-      case "ChannelDown":     // Kanal runter → Gast -1
-        updateScore("guest", 1000, document.getElementById("guest-score"));
-        break;
-      case "MediaPlayPause":  // Play/Pause → Timer Start/Pause toggeln
-        if (timerInterval) {
-          pauseTimer();
-        } else {
-          startTimer();
-        }
-        break;
-    }
-  });
-
-
-// Timer
-let timerElement = document.getElementById("timer");
-let duration = parseInt(document.getElementById("timeSelect").value);
-let remaining = duration;
-let timerInterval = null;
-
-function updateTimer(){
-  let minutes = Math.floor(remaining / 60);
-  let seconds = remaining % 60;
-  timerElement.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-  let progress = (duration - remaining) / duration;
-  document.querySelectorAll(".score").forEach(el => {
-    el.style.setProperty("--progress", progress);
-  });
-}
-function startTimer(){
-  if(timerInterval) return;
-  timerInterval = setInterval(() => {
-    if(remaining > 0){
-      remaining--;
-      updateTimer();
-    } else {
-      clearInterval(timerInterval);
-      timerInterval = null;
-      timerElement.textContent = "Spielende";
-      document.body.classList.add('blink');
-    }
-  },1000);
-}
-function pauseTimer(){
-  clearInterval(timerInterval);
-  timerInterval = null;
-}
-function resetTimer(){
-  clearInterval(timerInterval);
-  timerInterval = null;
-  duration = parseInt(document.getElementById("timeSelect").value);
-  remaining = duration;
-  updateTimer();
-  document.body.classList.remove('blink');
-  // Punkte zurücksetzen
-  scores.home = 0;
-  scores.guest = 0;
-  document.getElementById("home-score").textContent = scores.home;
-  document.getElementById("guest-score").textContent = scores.guest;
-}
-
-document.getElementById("start").addEventListener("click", startTimer);
-document.getElementById("pause").addEventListener("click", pauseTimer);
-document.getElementById("reset").addEventListener("click", resetTimer);
-document.getElementById("timeSelect").addEventListener("change", resetTimer);
-
-updateTimer();
+  <script src="https://cdn.jsdelivr.net/npm/drag-drop-touch@1.3.1/drag-drop-touch.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
