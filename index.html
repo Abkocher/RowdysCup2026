@@ -1,14 +1,277 @@
-function resetTimer(){
-  clearInterval(timerInterval);
-  timerInterval = null;
-  duration = parseInt(document.getElementById("timeSelect").value);
-  remaining = duration;
-  updateTimer();
-  document.body.classList.remove('blink');
-
-  // Punkte zurücksetzen
-  scores.home = 0;
-  scores.guest = 0;
-  document.getElementById("home-score").textContent = scores.home;
-  document.getElementById("guest-score").textContent = scores.guest;
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Rowdys Cup 2026 – Scoreboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root {
+  --bg-color: #6c6666;
+  --container-color: #c9c7c7;
+  --accent-color: #007bff;
+  --sidebar-width: 220px;
+  --sidebar-bottom-height: 140px;
+  --button-bg: white;
+  --button-hover-bg: #e0e0e0;
+  --button-active-bg: #007bff;
+  --button-active-color: white;
 }
+body {
+  margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: var(--bg-color); min-height: 100vh; display: flex; flex-direction: column;
+  transition: background-color 0.5s;
+}
+body.blink { animation: blink-bg 1s infinite alternate; }
+@keyframes blink-bg { from { background-color: var(--bg-color);} to { background-color: #ff4d4d;} }
+
+/* Sidebar links */
+#sidebar {
+  position: fixed; top:0; left:-220px; width:var(--sidebar-width); height:100vh;
+  background:var(--container-color); overflow-y:auto; transition:left 0.3s; z-index:110; padding:10px 0;
+}
+#sidebar.open { left:0; }
+#sidebar img {
+  display:block; width:80%; max-width:150px; max-height:80px; object-fit:contain;
+  margin:10px auto; cursor:grab; border-radius:6px; background:white; box-shadow:0 2px 4px rgba(0,0,0,0.15); padding:4px;
+  transition: transform 0.2s;
+}
+#sidebar img:hover { transform: scale(1.05); }
+
+/* Untere Sidebar */
+#sidebar-bottom {
+  position: fixed; left:0; bottom:-140px; width:100vw; height:var(--sidebar-bottom-height);
+  background: var(--container-color); overflow-x:auto; overflow-y:hidden; transition:bottom 0.3s; z-index:120;
+  display:flex; justify-content:center; align-items:center; gap:10px; padding:10px;
+}
+#sidebar-bottom.open { bottom:0; }
+#sidebar-bottom button {
+  flex:0 0 auto; min-width:120px; height:80px; padding:12px 15px; border:none; border-radius:8px;
+  background-color: var(--accent-color); cursor:pointer; font-weight:600; font-size:1rem;
+  box-shadow:0 2px 5px rgba(0,0,0,0.15); transition: background-color 0.3s, color 0.3s; user-select:none; position:relative;
+}
+#sidebar-bottom button:hover { transform: scale(1.05); }
+#sidebar-bottom button.active { background-color: var(--accent-color); color: rgb(2,179,26); box-shadow: 0 0 8px var(--accent-color); }
+#sidebar-bottom button::after { content: attr(data-label); font-weight:600; font-size:1rem; color:#111; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); }
+
+/* Toggle Buttons */
+#toggle-left { position:fixed; top:10px; left:10px; z-index:200; background:var(--accent-color); color:yellow; border:none; padding:10px 14px; cursor:pointer; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+#toggle-bottom { position:fixed; left:10px; bottom:170px; z-index:200; background:var(--accent-color); color:lightgreen; border:none; padding:10px 14px; cursor:pointer; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+
+/* Main Content */
+#main { margin-left:0; margin-bottom:0; flex:1; display:flex; flex-direction:column; justify-content:space-between; transition: margin-left 0.3s ease; }
+.scoreboard { display:flex; justify-content:space-between; gap:20px; flex:1; align-items:center; padding:20px; }
+.team-container { flex:1; display:flex; flex-direction:column; align-items:center; background:transparent; border-radius:12px; padding:2px; user-select:none; height:60vh; }
+.team-container img { width:100%; height:30%; object-fit:contain; background:transparent; border-radius:8px; }
+.score { position:relative; flex:1; width:100%; display:flex; justify-content:center; align-items:center; font-size:20vw; font-weight:bold; color:#111; margin:2px 0; background:var(--container-color); border-radius:12px; cursor:pointer; line-height:1; --progress:0; }
+.score.animate { animation: pop 0.3s ease-out;}
+@keyframes pop { 0%{transform:scale(1);}50%{transform:scale(1.2);}100%{transform:scale(1);} }
+.score::before { content:""; position:absolute; inset:-8px; border-radius:16px; padding:8px; background:conic-gradient(rgb(255,0,0) calc(var(--progress)*1turn), rgb(0,128,0) 0); -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; }
+
+/* Timer */
+.timer-container { text-align:center; margin-top:-20px; margin-bottom:20px; }
+.timer { font-size:6rem; font-weight:bold; color:white; background-color:rgba(0,0,0,0.8); padding:20px 40px; border-radius:12px; display:inline-block; box-shadow:0 0 12px rgba(0,0,0,0.5); margin-bottom:10px; }
+.controls select, .controls button { margin:5px; padding:10px 15px; font-size:1.2rem; border-radius:8px; border:none; }
+.controls button { background:var(--accent-color); color:white; cursor:pointer; transition:background 0.3s; }
+.controls button:hover { background:#24b300; }
+
+@media(max-width:800px){ .scoreboard{flex-direction:column;} .score{font-size:25vw;} .timer{font-size:12vw;} #main{margin-left:0;} }
+</style>
+</head>
+<body>
+
+<button id="toggle-left">☰ Links</button>
+<button id="toggle-bottom">☰ Unten</button>
+
+<!-- Sidebar Links -->
+<aside id="sidebar">
+  <img src="img/img_1.jpg" draggable="true" id="team1" alt="Aileen Krüger">
+  <img src="img/img_2.jpg" draggable="true" id="team2" alt="K+S">
+  <img src="img/img_3.jpg" draggable="true" id="team3" alt="Henne">
+  <img src="img/img_4.jpg" draggable="true" id="team4" alt="Rowdys">
+  <img src="img/img_5.jpg" draggable="true" id="team5" alt="Team 5">
+  <img src="img/img_6.jpg" draggable="true" id="team6" alt="Team 6">
+  <img src="img/img_7.jpg" draggable="true" id="team7" alt="Team 7">
+  <img src="img/img_8.jpg" draggable="true" id="team8" alt="Team 8">
+  <img src="img/img_9.jpg" draggable="true" id="team9" alt="Team 9">
+  <img src="img/img_10.jpg" draggable="true" id="team10" alt="Team 10">
+  <img src="img/img_11.jpg" draggable="true" id="team11" alt="Team 11">
+  <img src="img/img_12.jpg" draggable="true" id="team12" alt="Team 12">
+  <img src="img/img_13.jpg" draggable="true" id="team13" alt="Team 13">
+  <img src="img/img_14.jpg" draggable="true" id="team14" alt="Team 14">
+  <img src="img/img_15.jpg" draggable="true" id="team15" alt="Team 15">
+  <img src="img/img_16.jpg" draggable="true" id="team16" alt="Team 16">
+</aside>
+
+<!-- Untere Sidebar -->
+<aside id="sidebar-bottom" class="collapsed">
+  <div class="controls">
+    <select class="logo-select" id="home-select">
+      <option value="">Team wählen</option>
+      <option value="img/img_1.jpg">Aileen Krüger</option>
+      <option value="img/img_2.jpg">K+S</option>
+      <option value="img/img_3.jpg">Henne</option>
+      <option value="img/img_4.jpg">Rowdys</option>
+      <option value="img/img_5.jpg">Team 5</option>
+      <option value="img/img_6.jpg">Team 6</option>
+      <option value="img/img_7.jpg">Team 7</option>
+      <option value="img/img_8.jpg">Team 8</option>
+      <option value="img/img_9.jpg">Team 9</option>
+      <option value="img/img_10.jpg">Team 10</option>
+      <option value="img/img_11.jpg">Team 11</option>
+      <option value="img/img_12.jpg">Team 12</option>
+      <option value="img/img_13.jpg">Team 13</option>
+      <option value="img/img_14.jpg">Team 14</option>
+      <option value="img/img_15.jpg">Team 15</option>
+      <option value="img/img_16.jpg">Team 16</option>
+    </select>
+    <select id="timeSelect">
+      <option value="10">10 Sekunden</option>
+      <option value="480" selected>8 Minuten</option>
+      <option value="600">10 Minuten</option>
+      <option value="720">12 Minuten</option>
+    </select>
+    <button id="start">Start</button>
+    <button id="pause">Pause</button>
+    <button id="reset">Reset</button>
+    <select class="logo-select" id="guest-select">
+      <option value="">Team wählen</option>
+      <option value="img/img_1.jpg">Aileen Krüger</option>
+      <option value="img/img_2.jpg">K+S</option>
+      <option value="img/img_3.jpg">Henne</option>
+      <option value="img/img_4.jpg">Rowdys</option>
+      <option value="img/img_5.jpg">Team 5</option>
+      <option value="img/img_6.jpg">Team 6</option>
+      <option value="img/img_7.jpg">Team 7</option>
+      <option value="img/img_8.jpg">Team 8</option>
+      <option value="img/img_9.jpg">Team 9</option>
+      <option value="img/img_10.jpg">Team 10</option>
+      <option value="img/img_11.jpg">Team 11</option>
+      <option value="img/img_12.jpg">Team 12</option>
+      <option value="img/img_13.jpg">Team 13</option>
+      <option value="img/img_14.jpg">Team 14</option>
+      <option value="img/img_15.jpg">Team 15</option>
+      <option value="img/img_16.jpg">Team 16</option>
+    </select>
+  </div>
+</aside>
+
+<div id="main">
+  <div class="scoreboard">
+    <div class="team-container" id="home-container">
+      <img id="home-logo" src="" alt="Heim Team Logo">
+      <div class="score" id="home-score">0</div>
+    </div>
+    <div class="team-container" id="guest-container">
+      <img id="guest-logo" src="" alt="Gast Team Logo">
+      <div class="score" id="guest-score">0</div>
+    </div>
+  </div>
+</div>
+
+<div class="timer-container">
+  <div class="timer" id="timer">08:00</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/drag-drop-touch@1.3.1/drag-drop-touch.min.js"></script>
+<script>
+/* --- Sidebar Toggle --- */
+let sidebar = document.getElementById('sidebar');
+let sidebarBottom = document.getElementById('sidebar-bottom');
+let persistentOpenLeft = false, persistentOpenBottom = false;
+document.getElementById('toggle-left').addEventListener('click',()=>{
+  persistentOpenLeft=!persistentOpenLeft; sidebar.classList.toggle('open',persistentOpenLeft); sidebar.classList.toggle('collapsed',!persistentOpenLeft);
+});
+document.getElementById('toggle-bottom').addEventListener('click',()=>{
+  persistentOpenBottom=!persistentOpenBottom; sidebarBottom.classList.toggle('open',persistentOpenBottom); sidebarBottom.classList.toggle('collapsed',!persistentOpenBottom);
+});
+
+/* --- Mouseover Sidebar --- */
+document.addEventListener('mousemove', e => {
+  if(!persistentOpenLeft){
+    if(e.clientX <= 20){ sidebar.classList.add('open'); sidebar.classList.remove('collapsed'); }
+    else if(e.clientX > 220){ sidebar.classList.remove('open'); sidebar.classList.add('collapsed'); }
+  }
+  if(!persistentOpenBottom){
+    if(e.clientY >= window.innerHeight-20){ sidebarBottom.classList.add('open'); sidebarBottom.classList.remove('collapsed'); }
+    else if(e.clientY < window.innerHeight-140){ sidebarBottom.classList.remove('open'); sidebarBottom.classList.add('collapsed'); }
+  }
+});
+
+/* --- Drag & Drop --- */
+document.querySelectorAll('#sidebar img').forEach(img=>{
+  img.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', e.target.src); });
+});
+function setupDrop(containerId, logoId){
+  const container=document.getElementById(containerId);
+  const logo=document.getElementById(logoId);
+  container.addEventListener('dragover', e=> e.preventDefault());
+  container.addEventListener('drop', e=>{
+    e.preventDefault();
+    const src = e.dataTransfer.getData('text/plain');
+    if(src) logo.src=src;
+  });
+}
+setupDrop('home-container','home-logo');
+setupDrop('guest-container','guest-logo');
+
+/* --- Dropdown Logos --- */
+document.getElementById("home-select").addEventListener("change", function(){ document.getElementById("home-logo").src=this.value; });
+document.getElementById("guest-select").addEventListener("change", function(){ document.getElementById("guest-logo").src=this.value; });
+
+/* --- Score --- */
+const scores = {home:0, guest:0};
+function updateScore(target, y, elem){
+  if(y < elem.clientHeight/2) scores[target]++;
+  else scores[target] = Math.max(0,scores[target]-1);
+  const scoreElem = document.getElementById(target+'-score');
+  scoreElem.textContent = scores[target];
+  scoreElem.classList.add('animate');
+  setTimeout(()=>scoreElem.classList.remove('animate'),300);
+}
+document.getElementById("home-score").addEventListener("click", e=>updateScore("home", e.offsetY, e.currentTarget));
+document.getElementById("guest-score").addEventListener("click", e=>updateScore("guest", e.offsetY, e.currentTarget));
+
+/* --- Keyboard --- */
+document.addEventListener('keydown', e=>{
+  switch(e.key){
+    case '1': updateScore('home',0,document.getElementById('home-score')); break;
+    case '4': updateScore('home',1000,document.getElementById('home-score')); break;
+    case '2': updateScore('guest',0,document.getElementById('guest-score')); break;
+    case '5': updateScore('guest',1000,document.getElementById('guest-score')); break;
+  }
+});
+
+/* --- Timer --- */
+let timerElement = document.getElementById("timer");
+let duration = parseInt(document.getElementById("timeSelect").value);
+let remaining = duration;
+let timerInterval = null;
+function updateTimer(){
+  let minutes = Math.floor(remaining/60);
+  let seconds = remaining%60;
+  timerElement.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+  let progress = (duration - remaining)/duration;
+  document.querySelectorAll(".score").forEach(el=>{ el.style.setProperty("--progress",progress); });
+}
+function startTimer(){ if(timerInterval) return;
+  timerInterval = setInterval(()=>{
+    if(remaining>0){ remaining--; updateTimer(); }
+    else{ clearInterval(timerInterval); timerInterval=null; timerElement.textContent="Spielende"; document.body.classList.add('blink'); }
+  },1000);
+}
+function pauseTimer(){ clearInterval(timerInterval); timerInterval=null; }
+function resetTimer(){ clearInterval(timerInterval); timerInterval=null;
+  duration=parseInt(document.getElementById("timeSelect").value);
+  remaining=duration; updateTimer(); document.body.classList.remove('blink');
+  scores.home=0; scores.guest=0;
+  document.getElementById("home-score").textContent=scores.home;
+  document.getElementById("guest-score").textContent=scores.guest;
+}
+document.getElementById("start").addEventListener("click",startTimer);
+document.getElementById("pause").addEventListener("click",pauseTimer);
+document.getElementById("reset").addEventListener("click",resetTimer);
+document.getElementById("timeSelect").addEventListener("change",resetTimer);
+updateTimer();
+</script>
+</body>
+</html>
