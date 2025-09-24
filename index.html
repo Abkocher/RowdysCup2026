@@ -532,6 +532,12 @@
       remaining = duration;
       updateTimer();
       document.body.classList.remove('blink');
+
+        // Punkte zurücksetzen
+    scores.home = 0;
+    scores.guest = 0;
+    document.getElementById("home-score").textContent = scores.home;
+    document.getElementById("guest-score").textContent = scores.guest;
     }
 
     document.getElementById("start").addEventListener("click", startTimer);
