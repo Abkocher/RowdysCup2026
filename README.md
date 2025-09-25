@@ -1,108 +1,44 @@
-Hier ist ein Beispiel für ein README plus Bedienungsanleitung in Deutsch (für die Projektdatei `README.md`). Das ist ideal für das Github-Repository, aber auch als Info für jeden Nutzer.
+# Rowdys Cup 2026 – Scoreboard Web App
 
-```markdown
-# Rowdys Cup 2026 – Scoreboard
+## Overview
 
-***
+Eine für Fire TV Stick und Tablets optimierte, moderne, bildschirmfüllende Anzeige für Scores, Teams und Timer. Unterstützung für Touch und Tastatur, keine linke Sidebar – nur noch große Bedienelemente unten, ideal für 1920x1080 Displays.
 
-Ein flexibles Scoreboard für Vereins-, Turnier- und Freizeitspiele mit Logo-Auswahl, Drag & Drop und Timer. Funktioniert auf PC, Tablet und Handy.
+## Features
 
-## Inhalt
+- Zwei Teams mit großen Logos auswählbar (Dropdown).
+- Score-Inkrement und -Dekrement per Klick (oben/unten im Scorefeld) und Tastatur (Fire TV Stick: 1/4 Heim +/-, 2/5 Gast +/-).
+- Timer wählbar (8,10,12 min), Start/Pause/Reset—Blinken bei Ende.
+- Alles fullscreen und automatisch responsive (Tablet/TV).
+- Große Buttons für Fernbedienung/Touch-Bedienung.
+- Minimalistische Bedienleiste am unteren Bildschirmrand (umschaltbar).
 
-1. [Überblick](#überblick)
-2. [Installation](#installation)
-3. [Bedienungsanleitung](#bedienungsanleitung)
-4. [Funktionen](#funktionen)
-5. [FAQs](#faqs)
-6. [Screenshot](#screenshot)
+## Dateien
 
----
+- **index.html:** Grundgerüst, lädt `style.css` und `script.js`.
+- **style.css:** Optimale Styles für 1080p, große Abstände, responsive, Kontrast.
+- **script.js:** Logik für Scores, Timer, Buttonsteuerung (inkrementieren/dekrementieren), Dropdown-Auswahl.
+- **img/**: Logo-Bilder der Teams (Benenne die Bilder von img_1.jpg ... img_16.jpg, wie in den Dropdowns, kein Subfolder nötig).
+- **README.md:** Diese Anleitung.
 
-## Überblick
+## Bedienungshinweise
 
-Mit dem Scoreboard können Spielergebnisse von zwei Teams angezeigt, Logos einfach ausgewählt und das Spiel per Timer verwaltet werden. Es eignet sich für Fußball, Basketball, Volleyball und andere Sportarten.
+- **Team wählen:** Dropdown unten, Teamnamen wählen, wird direkt angezeigt.
+- **Punkte:** Score-Balken oben/unten anklicken für +/- (Klick- oder Touch-Unterstützung); FireTV-Remote: Tasten 1/4 für Heim +/-, 2/5 für Gast +/-
+- **Timer:** Zeit-Slot wählen, Start/Pause/Reset, bei Ablauf blinkt der Screen rot.
+- **Bedienleiste ein-/ausklappen:** Button „☰ Bedienleiste“ unten links — praktisch, um mehr Platz für den Score zu bekommen.
 
----
+## Anpassung
 
-## Installation
+- Du kannst in der `style.css` die Farbwerte (Theme) oder Abstände Pixel-genau anpassen.
+- In der `script.js` weitere Hotkeys oder Features ergänzen.
+- Logos/Bilder auf 400x210 Pixel bringen, damit die Anzeige immer gut aussieht.
 
-1. Lade alle Dateien in einen Ordner:
-   - `index.html`
-   - `style.css`
-   - `script.js`
-   - Ordner `img` mit Bilddateien z.B. `img/img_1.jpg` bis `img/img_16.jpg`
-2. Öffne die Datei `index.html` im Browser.
+## Browser-Kompatibilität
 
-Keine Installation oder Backend nötig – nur ein moderner Browser!
-
----
-
-## Bedienungsanleitung
-
-### Team-Logo auswählen
-
-- **Sidebar:** Ziehe ein Team-Logo per Drag & Drop in das Scoreboard auf Heim oder Gast.
-- **Dropdown:** Wähle ein Team aus der Liste unter dem jeweiligen Score, das Logo wird automatisch gesetzt.
-- **Klickauswahl:** Klicke zuerst auf "Logo wählen" unter dem Heim- oder Gast-Score – dann klicke auf ein Logo in der Sidebar.
-
-### Punktestand ändern
-
-- **Klick:** Klick auf die Zahl im Scoreboard bei „Heim“ oder „Gast“:
-  - Klick oben (+1), Klick unten (–1).
-- **Tastatur:** Nutze die Zahlentasten:
-  - `1` Heim +1, `4` Heim –1, `2` Gast +1, `5` Gast –1.
-
-### Timer
-
-- Wähle die gewünschte Zeit im Dropdown aus.
-- Starte den Timer mit **Start**.
-- Pausiere mit **Pause**, setzte zurück mit **Reset**.
-- Bei Ablauf blinkt der Hintergrund rot und "Spielende" erscheint.
-
-### Sidebar aus-/einklappen
-
-- Klicke auf das **☰**-Symbol oben links, um die Sidebar einzublenden/auszublenden.
+- Getestet mit Chrome, Firefox und Silk-Browser auf Fire TV Stick.
+- Keine Abhängigkeit von Spezial-Bibliotheken; funktioniert out-of-the-box als einfache statische Webseite, auch ohne Server.
 
 ---
 
-## Funktionen
-
-- Drag & Drop von Teamlogos
-- Logo-Auswahl per Dropdown oder Klick
-- Animierte Punktestand-Anzeige, inkl. Tasteneingabe
-- Spiel-Timer und Fortschrittsanzeige
-- Responsive Design für Smartphone, Tablet und PC
-
----
-
-## FAQs
-
-**Wie viele Teams kann ich anzeigen?**  
-Bis zu 16 (angepasst mit neuen Bildern im img-Ordner).
-
-**Welche Image-Formate sind erlaubt?**  
-`JPG` – PNG funktioniert auch, wenn transparent gewünscht.
-
-**Geht das auch offline?**  
-Ja, einfach Ordner lokal öffnen!
-
----
-
-## Screenshot
-
-*(Hier Bild einfügen, z.B. mit Markdown:)*  
-`![Rowdys Cup Scoreboard](img/screenshot.jpg)`
-
----
-
-## Hinweise
-
-- Drag & Drop benötigt ggf. Polyfill damit es zuverlässig auf Tablets und Smartphones läuft. Die Polyfill (`drag-drop-touch.min.js`) ist bereits eingebunden.
-- Die Bildauswahl im Dropdown funktioniert nur, wenn die Werte exakt zu den Pfaden der Bilder passen (`img/img_2.jpg`).
-- Für Änderungen am Layout passe die Styles in `style.css` an.
-
----
-
-**Viel Erfolg beim Turnier und viel Spaß mit dem Scoreboard!**
-```
-Dieses README gibt eine Übersicht, Installationsinfo, Bedienung und Tipps für User.
+Viel Spaß beim nächsten Turnier!
