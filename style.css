@@ -2,7 +2,7 @@
   --bg-color: #6c6666;
   --container-color: #c9c7c7;
   --accent-color: #007bff;
-  --sidebar-bottom-height: 140px;
+  --sidebar-bottom-height: 80px; /* Jetzt schmaler! */
 }
 
 body {
@@ -31,7 +31,7 @@ body.blink { animation: blink-bg 1s infinite alternate; }
 .timer { font-size:6rem; font-weight:bold; color:white; background-color:rgba(0,0,0,0.8); padding:20px 40px; border-radius:12px; display:inline-block; box-shadow:0 0 12px rgba(0,0,0,0.5); margin-bottom:10px; }
 
 #sidebar-bottom {
-  position: fixed; left:0; bottom:-140px; width:100vw; height:var(--sidebar-bottom-height);
+  position: fixed; left:0; bottom:-80px; width:100vw; height:var(--sidebar-bottom-height);
   background: var(--container-color); overflow-x:auto; overflow-y:hidden; transition:bottom 0.3s; z-index:120;
   display:flex; justify-content:center; align-items:center; gap:10px; padding:10px;
 }
@@ -40,11 +40,25 @@ body.blink { animation: blink-bg 1s infinite alternate; }
 .controls button { background:var(--accent-color); color:white; cursor:pointer; transition:background 0.3s; }
 .controls button:hover { background:#24b300; }
 
-#toggle-bottom { position:fixed; left:10px; bottom:170px; z-index:200; background:var(--accent-color); color:lightgreen; border:none; padding:10px 14px; cursor:pointer; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+/* BUTTON neu nach rechts unten */
+#toggle-bottom {
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:200;
+  background:var(--accent-color);
+  color:lightgreen;
+  border:none;
+  padding:12px 22px;
+  cursor:pointer;
+  border-radius:8px;
+  box-shadow:0 2px 4px rgba(0,0,0,0.2);
+}
 
 @media(max-width:800px){
   .scoreboard{flex-direction:column;}
   .score{font-size:25vw;}
   .timer{font-size:12vw;}
   #main{margin-left:0;}
+  #toggle-bottom { right:11px; bottom:11px; padding:10px 17px; font-size:1.1rem; }
 }
