@@ -6,7 +6,7 @@ document.getElementById('toggle-bottom').addEventListener('click',()=>{
 document.addEventListener('mousemove', e => {
   if(!persistentOpenBottom){
     if(e.clientY >= window.innerHeight-20){ sidebarBottom.classList.add('open'); sidebarBottom.classList.remove('collapsed'); }
-    else if(e.clientY < window.innerHeight-140){ sidebarBottom.classList.remove('open'); sidebarBottom.classList.add('collapsed'); }
+    else if(e.clientY < window.innerHeight-80){ sidebarBottom.classList.remove('open'); sidebarBottom.classList.add('collapsed'); }
   }
 });
 document.getElementById("home-select").addEventListener("change", function(){ document.getElementById("home-logo").src=this.value; });
