@@ -10,34 +10,108 @@ body {
   background: var(--bg-color); min-height: 100vh; display: flex; flex-direction: column;
   transition: background-color 0.5s;
 }
+
 body.blink { animation: blink-bg 1s infinite alternate; }
-@keyframes blink-bg { from { background-color: var(--bg-color);} to { background-color: #ff4d4d;} }
 
-#main { margin-left:0; margin-bottom:0; flex:1; display:flex; flex-direction:column; justify-content:space-between; }
+@keyframes blink-bg {
+  from { background-color: var(--bg-color);}
+  to   { background-color: #ff4d4d;}
+}
 
-.scoreboard { display:flex; justify-content:space-between; gap:20px; flex:1; align-items:center; padding:20px; }
+#main {
+  margin-left:0; margin-bottom:0; flex:1;
+  display:flex; flex-direction:column; justify-content:space-between;
+}
 
-.team-container { flex:1; display:flex; flex-direction:column; align-items:center; background:transparent; border-radius:12px; padding:2px; user-select:none; height:60vh; }
-.team-container img { width:100%; height:30%; object-fit:contain; background:transparent; border-radius:8px; }
+.scoreboard {
+  display:flex; justify-content:space-between;
+  gap:20px; flex:1; align-items:center; padding:20px;
+}
+
+.team-container {
+  flex:1; display:flex; flex-direction:column; align-items:center;
+  background:transparent; border-radius:12px; padding:2px; user-select:none;
+  height:60vh;
+}
+
+.team-container img {
+  width:100%; height:30%; object-fit:contain;
+  background:transparent; border-radius:8px;
+}
 
 .score {
-  position:relative; flex:1; width:100%; display:flex; justify-content:center; align-items:center; font-size:20vw; font-weight:bold; color:#111; margin:2px 0; background:var(--container-color); border-radius:12px; cursor:pointer; line-height:1; --progress:0;
+  position:relative; flex:1; width:100%;
+  display:flex; justify-content:center; align-items:center;
+  font-size:20vw; font-weight:bold; color:#111; margin:2px 0;
+  background:var(--container-color); border-radius:12px;
+  cursor:pointer; line-height:1; --progress:0;
 }
-.score.animate { animation: pop 0.3s ease-out;}
-@keyframes pop { 0%{transform:scale(1);}50%{transform:scale(1.2);}100%{transform:scale(1);} }
-.score::before { content:""; position:absolute; inset:-8px; border-radius:16px; padding:8px; background:conic-gradient(rgb(255,0,0) calc(var(--progress)*1turn), rgb(0,128,0) 0); -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; }
 
-.timer-container { text-align:center; margin-top:-20px; margin-bottom:20px; }
-.timer { font-size:6rem; font-weight:bold; color:white; background-color:rgba(0,0,0,0.8); padding:20px 40px; border-radius:12px; display:inline-block; box-shadow:0 0 12px rgba(0,0,0,0.5); margin-bottom:10px; }
+.score.animate { animation: pop 0.3s ease-out; }
+
+@keyframes pop {
+  0%   {transform:scale(1);}
+  50%  {transform:scale(1.2);}
+  100% {transform:scale(1);}
+}
+
+.score::before {
+  content:""; position:absolute; inset:-8px; border-radius:16px; padding:8px;
+  background:conic-gradient(rgb(255,0,0) calc(var(--progress)*1turn), rgb(0,128,0) 0);
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  pointer-events:none;
+}
+
+.timer-container {
+  text-align:center;
+  margin-top:-20px; margin-bottom:20px;
+}
+
+.timer {
+  font-size:6rem; font-weight:bold; color:white;
+  background-color:rgba(0,0,0,0.8);
+  padding:20px 40px; border-radius:12px;
+  display:inline-block; box-shadow:0 0 12px rgba(0,0,0,0.5);
+  margin-bottom:10px;
+}
 
 #sidebar-bottom {
-  position: fixed; left:0; bottom:-80px; width:100vw; height:var(--sidebar-bottom-height);
-  background: var(--container-color); overflow-x:auto; overflow-y:hidden; transition:bottom 0.3s; z-index:120;
-  display:flex; justify-content:center; align-items:center; gap:10px; padding:10px;
+  position: fixed; left:0; bottom:-80px;
+  width:100vw; height:var(--sidebar-bottom-height);
+  background: var(--container-color);
+  overflow-x:auto; overflow-y:hidden;
+  transition:bottom 0.3s; z-index:120;
+  display:flex; justify-content:center;
+  align-items:center; gap:10px; padding:10px;
 }
+
 #sidebar-bottom.open { bottom:0; }
-.controls select, .controls button { margin:5px; padding:10px 15px; font-size:1.2rem; border-radius:8px; border:none; }
-.controls button { background:var(--accent-color); color:white; cursor:pointer; transition:background 0.3s; }
+
+.controls select,
+.controls button {
+  margin:5px;
+  padding:10px 15px;
+  font-size:1.2rem;
+  border-radius:8px;
+  border:none;
+}
+
+/* ✅ Team-Auswahl kleiner gemacht */
+#sidebar-bottom .logo-select {
+  padding:4px 6px !important;
+  font-size:0.9rem !important;
+  height:32px !important;
+  width:140px !important;
+}
+
+.controls button {
+  background:var(--accent-color);
+  color:white;
+  cursor:pointer;
+  transition:background 0.3s;
+}
+
 .controls button:hover { background:#24b300; }
 
 /* BUTTON neu nach rechts unten */
@@ -60,5 +134,9 @@ body.blink { animation: blink-bg 1s infinite alternate; }
   .score{font-size:25vw;}
   .timer{font-size:12vw;}
   #main{margin-left:0;}
-  #toggle-bottom { right:11px; bottom:11px; padding:10px 17px; font-size:1.1rem; }
+  #toggle-bottom {
+    right:11px; bottom:11px;
+    padding:10px 17px;
+    font-size:1.1rem;
+  }
 }
